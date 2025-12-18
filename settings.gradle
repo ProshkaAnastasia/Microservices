@@ -1,0 +1,8 @@
+rootProject.name = 'microservices'
+
+include 'eureka-server'
+include 'config-server'
+include 'api-gateway'
+include 'config-repo'
+//include 'user-service'
+//include 'product-service'

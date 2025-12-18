@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.itmo.market'
+version = '1.0.0'
+
+dependencies {
+    // ============ SPRING CLOUD ============
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+    implementation 'org.springframework.cloud:spring-cloud-config-client'
+
+    // ============ DEVELOPMENT ============
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
