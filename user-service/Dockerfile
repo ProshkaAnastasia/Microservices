@@ -36,6 +36,6 @@ USER appuser
 EXPOSE 8081
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 \
-    CMD wget --quiet --tries=1 --spider http://localhost:8081/actuator/health || exit 1
+    CMD wget --quiet --tries=1 --spider http://localhost:8081/api/v1/actuator/health || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
