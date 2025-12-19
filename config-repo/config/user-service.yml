@@ -24,8 +24,6 @@ spring:
   flyway:
     locations: classpath:db/migration
     schemas: user_service
-    baseline-on-migrate: true
-    baseline-description: "Initial baseline"
 
 
 server:
