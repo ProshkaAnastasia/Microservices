@@ -1,0 +1,79 @@
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - name: RequestLoggingFilter
+        - name: ResponseLoggingFilter
+      
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/users/**,/api/auth/**,/api/profiles/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: user-service-breaker
+                    fallback: forward:/fallback/user-service
+                - RewritePath=/api/users/(?<segment>.*), /api/users/$\{segment}
+            
+            - id: product-service
+              uri: lb://product-service
+              predicates:
+                - Path=/api/products/**,/api/search/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: product-service-breaker
+                    fallback: forward:/fallback/product-service
+                - RewritePath=/api/products/(?<segment>.*), /api/products/$\{segment}
+            
+            - id: shop-service
+              uri: lb://shop-service
+              predicates:
+                - Path=/api/shops/**,/api/sellers/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: shop-service-breaker
+                    fallback: forward:/fallback/shop-service
+                - RewritePath=/api/shops/(?<segment>.*), /api/shops/$\{segment}
+            
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                - Path=/api/orders/**,/api/checkout/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: order-service-breaker
+                    fallback: forward:/fallback/order-service
+                - RewritePath=/api/orders/(?<segment>.*), /api/orders/$\{segment}
+            
+            - id: comment-service
+              uri: lb://comment-service
+              predicates:
+                - Path=/api/comments/**,/api/reviews/**,/api/ratings/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: comment-service-breaker
+                    fallback: forward:/fallback/comment-service
+                - RewritePath=/api/comments/(?<segment>.*), /api/comments/$\{segment}
+            
+            - id: cart-service
+              uri: lb://cart-service
+              predicates:
+                - Path=/api/cart/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: cart-service-breaker
+                    fallback: forward:/fallback/cart-service
+                - RewritePath=/api/cart/(?<segment>.*), /api/cart/$\{segment}
+    
+    discovery:
+      client:
+        service-id: api-gateway

@@ -3,14 +3,19 @@ spring:
     name: api-gateway
   cloud:
     config:
+      enabled: true
       uri: http://localhost:8888
       username: admin
-      password: admin
-      name: api-gateway
-      label: main
-      fail-fast: true
+      password: ${CONFIG_PASSWORD:admin}
+      fail-fast: false
       retry:
+        max-attempts: 5
         initial-interval: 1000
-        max-interval: 5000
-        max-attempts: 6
-        multiplier: 1.1
+  config:
+    import: configserver:http://localhost:8888
+
+logging:
+  level:
+    org.springframework.cloud.bootstrap: DEBUG
+    org.springframework.cloud.config.client: DEBUG
+    org.springframework.boot.context.config: DEBUG 
