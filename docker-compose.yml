@@ -100,9 +100,6 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_APPLICATION_NAME=user-service
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/itmo_market
-      - SPRING_DATASOURCE_USERNAME=itmouser
-      - SPRING_DATASOURCE_PASSWORD=itmopassword
     depends_on:
       postgres:
         condition: service_healthy
@@ -117,6 +114,36 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  product-service:
+    build:
+      context: .
+      dockerfile: product-service/Dockerfile
+    container_name: product-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=user-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      api-gateway:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+    networks:
+      - microservices-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5

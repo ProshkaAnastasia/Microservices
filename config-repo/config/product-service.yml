@@ -1,0 +1,103 @@
+spring:
+  application:
+    name: product-service
+  
+  config:
+    import: optional:configserver:http://localhost:8888
+  
+  cloud:
+    config:
+      enabled: true
+      fail-fast: false
+    
+    discovery:
+      enabled: true
+    
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      client:
+        config:
+          default:
+            connect-timeout: 5000
+            read-timeout: 5000
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/itmo_market
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        default_schema: product_service
+    show-sql: false
+  
+  flyway:
+    locations: classpath:db/migration
+    schemas: product_service
+    baseline-on-migrate: true
+
+server:
+  port: 8083
+  servlet:
+    context-path: /api/v1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/ 
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+  
+  health:
+    circuitbreaker:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    ru.itmo.market: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+
+user-service:
+  url: http://user-service:8081/api/v1
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: COUNT_BASED
+        slowCallDurationThreshold: 2000
+        slowCallRateThreshold: 50
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+    instances:
+      userServiceCB:
+        baseConfig: default

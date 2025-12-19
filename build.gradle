@@ -95,3 +95,28 @@ project(":user-service") {
         testImplementation "org.testcontainers:postgresql:1.19.7"
     }
 }
+
+project(":product-service") {
+    dependencies {
+        // Spring Boot - ОСНОВНОЕ
+        implementation "org.springframework.boot:spring-boot-starter-web"
+        implementation "org.springframework.boot:spring-boot-starter-validation"
+        implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
+        // ⭐ Spring Cloud - ДОБАВИТЬ (это недостаёт!)
+        implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+        implementation "org.springframework.cloud:spring-cloud-starter-bootstrap"
+        implementation "org.springframework.cloud:spring-cloud-starter-config"
+        implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+        implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j"
+
+        // БД
+        runtimeOnly "org.postgresql:postgresql"
+        implementation "org.flywaydb:flyway-core"
+        implementation "org.flywaydb:flyway-database-postgresql"
+
+        // Тестирование
+        testImplementation "org.testcontainers:testcontainers:1.19.7"
+        testImplementation "org.testcontainers:postgresql:1.19.7"
+    }
+}

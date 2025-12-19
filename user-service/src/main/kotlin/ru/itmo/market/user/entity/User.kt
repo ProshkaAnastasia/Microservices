@@ -33,7 +33,7 @@ data class User(
     @Column(length = 255)
     var profileImageUrl: String? = null,
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = UserRole::class)
     @CollectionTable(name = "user_roles", schema = "user_service", joinColumns = [JoinColumn(name = "user_id")])
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
