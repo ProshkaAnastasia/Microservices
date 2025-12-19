@@ -9,16 +9,15 @@ spring:
     config:
       server:
         git:
-          uri: file:../config-repo
-          basedir: target/config-repo
+          uri: https://github.com/ProshkaAnastasia/Microservices
+          search-paths: 
+            - /config-repo/config
           default-label: main
           skip-ssl-validation: false
           timeout: 5
           clone-on-start: true
           force-pull: true
           refresh-rate: 0
-          search-paths: 
-            - 'config'
         profile-separator: '-'
   
   security:
