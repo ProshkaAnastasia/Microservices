@@ -44,9 +44,10 @@ spring:
     locations: classpath:db/migration
     schemas: product_service
     baseline-on-migrate: true
+    baseline-description: "Initial baseline"
 
 server:
-  port: 8083
+  port: 8082
   servlet:
     context-path: /api/v1
 
