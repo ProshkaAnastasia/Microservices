@@ -44,7 +44,7 @@ services:
       dockerfile: config-server/Dockerfile
     container_name: config-server
     ports:
-      - "8888:8080"
+      - "8888:8888"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_APPLICATION_NAME=config-server
@@ -55,7 +55,7 @@ services:
       - microservices-net
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -77,15 +77,15 @@ services:
       - microservices-net
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: api-gateway/Dockerfile
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -116,7 +116,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_APPLICATION_NAME=user-service
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/itmo_market_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/itmo_market
       - SPRING_DATASOURCE_USERNAME=itmouser
       - SPRING_DATASOURCE_PASSWORD=itmopassword
     depends_on:

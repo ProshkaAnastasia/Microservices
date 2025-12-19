@@ -77,3 +77,8 @@ spring:
     discovery:
       client:
         service-id: api-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
