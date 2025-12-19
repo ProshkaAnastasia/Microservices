@@ -98,7 +98,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=default
       - SPRING_APPLICATION_NAME=user-service
     depends_on:
       postgres:
@@ -126,8 +126,8 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_APPLICATION_NAME=user-service
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_APPLICATION_NAME=product-service
     depends_on:
       postgres:
         condition: service_healthy

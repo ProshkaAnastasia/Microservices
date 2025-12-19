@@ -1,6 +1,12 @@
 spring:
   application:
     name: product-service
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/itmo_market  # ← localhost → postgres
+    username: itmo_user  # ← postgres → itmo_user
+    password: itmo_password  # ← postgres → itmo_password
+    driver-class-name: org.postgresql.Driver
   
   config:
     import: optional:configserver:http://localhost:8888
@@ -21,12 +27,6 @@ spring:
           default:
             connect-timeout: 5000
             read-timeout: 5000
-  
-  datasource:
-    url: jdbc:postgresql://localhost:5432/itmo_market
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
   
   jpa:
     hibernate:
