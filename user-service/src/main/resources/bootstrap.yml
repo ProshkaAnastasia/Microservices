@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: user-service
+  
+  cloud:
+    config:
+      enabled: true
+      uri: http://config-server:8888  # ← Имя сервиса вместо localhost!
+      username: admin
+      password: ${CONFIG_PASSWORD:admin}
+      fail-fast: true  # ← true для видимости ошибок
+      retry:
+        max-attempts: 5
+        initial-interval: 1000
+        max-interval: 5000
+        multiplier: 1.1
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.bootstrap: DEBUG
+    org.springframework.cloud.config.client: DEBUG
+    org.springframework.boot.context.config: DEBUG
+    org.springframework.cloud: DEBUG

@@ -76,3 +76,22 @@ project(":api-gateway") {
         implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j"
     }
 }
+
+
+project(":user-service") {
+    dependencies {
+        // ⭐ ОБЯЗАТЕЛЬНЫЕ ЗАВИСИМОСТИ
+        implementation "org.springframework.boot:spring-boot-starter-web"
+        implementation "org.springframework.boot:spring-boot-starter-validation"      // ← КРИТИЧНО!
+        implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+        
+        // БД
+        runtimeOnly "org.postgresql:postgresql"
+        implementation "org.flywaydb:flyway-core"
+        implementation "org.flywaydb:flyway-database-postgresql"
+        
+        // Тестирование
+        testImplementation "org.testcontainers:testcontainers:1.19.7"
+        testImplementation "org.testcontainers:postgresql:1.19.7"
+    }
+}

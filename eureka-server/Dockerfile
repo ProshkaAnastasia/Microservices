@@ -8,6 +8,7 @@ COPY eureka-server/build.gradle eureka-server/
 COPY config-server/build.gradle config-server/
 COPY api-gateway/build.gradle api-gateway/
 COPY user-service/build.gradle user-service/
+COPY common/build.gradle common/
 # COPY product-service/build.gradle.kts product-service/
 # COPY order-service/build.gradle.kts order-service/
 

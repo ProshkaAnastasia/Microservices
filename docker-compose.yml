@@ -22,22 +22,6 @@ services:
       - microservices-net
     restart: unless-stopped
 
-  redis:
-    image: redis:7-alpine
-    container_name: itmo-market-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - microservices-net
-    restart: unless-stopped
-
   config-server:
     build:
       context: .
@@ -108,8 +92,8 @@ services:
 
   user-service:
     build:
-      context: ./user-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: user-service/Dockerfile
     container_name: user-service
     ports:
       - "8081:8081"
@@ -126,11 +110,13 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+      api-gateway:
+        condition: service_healthy
     networks:
       - microservices-net
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5

@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: user-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/itmo_market
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
+        default_schema: user_service
+    show-sql: false
+  
+  flyway:
+    locations: classpath:db/migration
+    schemas: user_service
+    baseline-on-migrate: true
+    baseline-description: "Initial baseline"
+
+server:
+  port: 8082
+  servlet:
+    context-path: /api/v1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    root: INFO
+    ru.itmo.market: DEBUG

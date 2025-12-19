@@ -1,0 +1,13 @@
+dependencies {
+    // compileOnly = не включаем в JAR (берется из main service)
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.0'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web:3.2.0'
+    compileOnly 'org.springframework.boot:spring-boot-starter-validation:3.2.0'
+    compileOnly 'org.postgresql:postgresql:42.7.1'
+    
+    // Jackson
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.0'
+}
