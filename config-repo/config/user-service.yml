@@ -3,9 +3,9 @@ spring:
     name: user-service
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/itmo_market
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://postgres:5432/itmo_market  # ← localhost → postgres
+    username: itmo_user  # ← postgres → itmo_user
+    password: itmo_password  # ← postgres → itmo_password
     driver-class-name: org.postgresql.Driver
   
   jpa:
@@ -27,15 +27,18 @@ spring:
     baseline-on-migrate: true
     baseline-description: "Initial baseline"
 
+
 server:
-  port: 8082
+  port: 8081
   servlet:
     context-path: /api/v1
+
 
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka/  # ← localhost → eureka-server
+
 
 logging:
   level:
