@@ -1,0 +1,115 @@
+spring:
+  application:
+    name: order-service
+  
+  config:
+    import: optional:configserver:http://localhost:8888
+  
+  cloud:
+    config:
+      enabled: true
+      fail-fast: false
+      uri: http://localhost:8888
+      profile: default
+      label: main
+    
+    discovery:
+      enabled: true
+    
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      client:
+        config:
+          default:
+            connect-timeout: 5000
+            read-timeout: 5000
+  
+  datasource:
+    url: jdbc:postgresql://postgres:5432/itmo_market  # ← localhost → postgres
+    username: itmo_user  # ← postgres → itmo_user
+    password: itmo_password  # ← postgres → itmo_password
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        default_schema: order_service
+    show-sql: false
+  
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: order_service
+    baseline-on-migrate: false
+    clean-disabled: false
+    out-of-order: false
+
+server:
+  port: 8084
+  servlet:
+    context-path: /api/v1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    enabled: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreaker:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    ru.itmo.market: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    org.flywaydb: DEBUG
+
+product-service:
+  url: http://localhost:8083/api/v1
+
+user-service:
+  url: http://localhost:8082/api/v1
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: COUNT_BASED
+        slowCallDurationThreshold: 2000
+        slowCallRateThreshold: 50
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+    instances:
+      productServiceCB:
+        baseConfig: default
+      userServiceCB:
+        baseConfig: default
